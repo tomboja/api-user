@@ -1,5 +1,9 @@
 # Stage 1: Build the application
-FROM maven:3.9.9-eclipse-temurin-25 AS build
+FROM eclipse-temurin:25-jdk AS build
+
+RUN apt-get update \
+  && apt-get install -y maven \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /app
@@ -11,7 +15,7 @@ COPY src ./src
 RUN mvn -B clean package -DskipTests
 
 # Stage 2: Create the final image
-FROM eclipse-temurin:25-jre-alpine
+FROM eclipse-temurin:25-jre
 
 # Set the working directory
 WORKDIR /app
