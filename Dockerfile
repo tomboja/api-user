@@ -1,16 +1,14 @@
 # Stage 1: Build the application
-# Using an image that provides Java 25 and Maven
-FROM infotechsoft/maven:3.9.11-jdk-25 AS build
+FROM maven:3.9.9-eclipse-temurin-25 AS build
 
 # Set the working directory
 WORKDIR /app
 
 # Copy pom.xml and source code to the working directory
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
 COPY src ./src
 # Build the application
-RUN mvn clean package -DskipTests
+RUN mvn -B clean package -DskipTests
 
 # Stage 2: Create the final image
 FROM eclipse-temurin:25-jre-alpine
